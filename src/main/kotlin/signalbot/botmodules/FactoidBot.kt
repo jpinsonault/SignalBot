@@ -1,17 +1,20 @@
-package signalbot
+package signalbot.botmodules
 
-class Factoids{
+import signalbot.Client
+import signalbot.Message
+
+class FactoidBot{
     companion object {
         val prefix = "FactoidBot"
 
         fun checkMessage(client: Client, message: Message){
-            val setRegex = Regex("""~([^\s]+) is ([^\s]+)""")
+            val setRegex = Regex("""^~(.*) +is +(.*)\s*""")
             val setMatches = setRegex.find(message.content)?.groupValues
 
-            val unsetRegex = Regex("""~([^\s]+) unset""")
+            val unsetRegex = Regex("""~(.*) +unset""")
             val unsetMatches = unsetRegex.find(message.content)?.groupValues
 
-            val getRegex = Regex("""~([^\s]+)""")
+            val getRegex = Regex("""\s*~(.*)\s*""")
             val getMatches = getRegex.find(message.content)?.groupValues
 
             if (setMatches != null){

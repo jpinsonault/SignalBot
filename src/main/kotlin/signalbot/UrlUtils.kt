@@ -1,5 +1,6 @@
 package signalbot
 
+import org.apache.commons.io.FileUtils
 import org.apache.commons.io.FilenameUtils
 import java.io.File
 import java.io.FileOutputStream
@@ -14,15 +15,18 @@ class UrlUtils{
             val url = getAnyUrlIn(content)
             if(url != null){
                 val filename = FilenameUtils.getName(url.path)
-                val localFilepath = downloadFromUrl(url, outputDirectory, filename)
+                val extension = FilenameUtils.getExtension(url.path)
 
-                return if (localFilepath == null){
-                    null
-                } else{
-                    File(localFilepath)
+                if(extension != null && extension != ""){
+                    val localFilepath = downloadFromUrl(url, outputDirectory, filename)
+
+                    return if (localFilepath == null){
+                        null
+                    } else{
+                        File(localFilepath)
+                    }
                 }
             }
-
             return null
         }
 
@@ -40,40 +44,13 @@ class UrlUtils{
 
         @Throws(IOException::class)
         fun downloadFromUrl(url: URL, directory: File, filename: String): String? {
-            var `is`: InputStream? = null
-            var fos: FileOutputStream? = null
-
             val outputPath = "$directory/$filename"
 
             try {
-                //connect
-                val urlConn = url.openConnection()
-
-                //get inputstream from connection
-                `is` = urlConn.getInputStream()
-                fos = FileOutputStream(outputPath)
-
-                // 4KB buffer
-                val buffer = ByteArray(4096)
-                var length = `is`.read(buffer)
-
-                // read from source and write into local file
-                while (length > 0) {
-                    fos.write(buffer, 0, length)
-                    length = `is`.read(buffer)
-                }
+                FileUtils.copyURLToFile(url, File(outputPath))
                 return outputPath
             } catch (e: Exception){
                 return null
-            }
-            finally {
-                try {
-                    if (`is` != null) {
-                        `is`.close()
-                    }
-                } finally {
-                    fos?.close()
-                }
             }
         }
     }

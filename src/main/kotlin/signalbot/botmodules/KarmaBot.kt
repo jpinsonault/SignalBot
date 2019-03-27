@@ -1,6 +1,9 @@
-package signalbot
+package signalbot.botmodules
 
-class PlusPlus{
+import signalbot.Client
+import signalbot.Message
+
+class KarmaBot{
     companion object {
         val prefix = "PlusPlusBot"
 
@@ -14,7 +17,10 @@ class PlusPlus{
                 if (incDec == "--") decrement(client, key)
                 else increment(client, key)
 
-                client.replyTo(message, "$key$incDec (${currentKarma(client, key)})")
+                client.replyTo(message, "$key$incDec (${currentKarma(
+                    client,
+                    key
+                )})")
             }
         }
 

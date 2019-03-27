@@ -9,6 +9,23 @@ import java.io.InputStream
 import java.lang.Exception
 import java.net.URL
 
+fun <R>Regex.ifFound(string: String, block: (MatchResult) -> R): R?{
+    val matches = this.find(string)
+    return if(matches != null){
+        block(matches)
+    }
+    else{
+        null
+    }
+}
+
+fun <T, R>T?.ifNotNull(block: (T)->R): R?{
+    if(this != null){
+        return block(this)
+    }
+
+    return null
+}
 
 fun String.runCommand(workingDir: File, log: Boolean=false): String {
     println("Running command: ${this}")
@@ -27,3 +44,4 @@ fun String.runCommand(workingDir: File, log: Boolean=false): String {
         throw(e)
     }
 }
+
