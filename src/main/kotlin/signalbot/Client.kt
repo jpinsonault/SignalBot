@@ -1,11 +1,9 @@
 package signalbot
 
 import java.io.File
-import signalbot.UrlUtils.Companion.loadAttachment
 import signalbot.botmodules.PauserBot
 import signalbot.botmodules.RateLimiter
 import org.dizitart.no2.*
-import org.dizitart.no2.filters.Filters
 import signalbot.apis.DefaultSignalApi
 import signalbot.apis.NitriteStorage
 import signalbot.apis.SignalApi
@@ -25,7 +23,7 @@ class Envelope(val from: String,
 
 class Client {
     lateinit var tempDir: File
-    lateinit var botPhone: String
+    lateinit var config: Config
     lateinit var storage: StorageApi
     val api: SignalApi = DefaultSignalApi(this)
 
@@ -41,8 +39,7 @@ class Client {
     private val onTimerCallbacks = mutableMapOf<RateLimiter, (Client) -> Unit>()
 
     fun start(){
-        val config = Config.loadFile(Paths.get(System.getProperty("user.home"), ".signal").toString())
-        botPhone = config.botPhone
+        config = Config.fromFile(Paths.get(System.getProperty("user.home"), ".signal").toString())
 
         val db = Nitrite.builder()
             .compressed()
@@ -121,9 +118,5 @@ class Client {
         val files = tempDir.listFiles()
 
         files.forEach { it.deleteRecursively() }
-    }
-
-    companion object {
-        val signalCli = "signal-cli.bat"
     }
 }

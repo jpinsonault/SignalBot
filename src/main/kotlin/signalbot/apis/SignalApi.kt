@@ -20,10 +20,10 @@ class DefaultSignalApi(val client: Client): SignalApi {
         val messageAttachment = attachment ?: client.getAttachmentFromCallbacks(content)
 
         if (group){
-            runSendToGroupCommand(content, to, client.botPhone, messageAttachment)
+            runSendToGroupCommand(content, to, client.config.botPhone, messageAttachment)
         }
         else{
-            runSendCommand(content, to, client.botPhone, messageAttachment)
+            runSendCommand(content, to, client.config.botPhone, messageAttachment)
         }
 
         client.clearTempDir()
@@ -56,7 +56,7 @@ class DefaultSignalApi(val client: Client): SignalApi {
     }
 
     private fun runSendCommand(content: String, botPhone: String, toPhone: String, attachment: File? = null){
-        var command = "${Client.signalCli} -u $botPhone send -m \"$content\" $toPhone"
+        var command = "${client.config.signalCliCommand} -u $botPhone send -m \"$content\" $toPhone"
 
         if (attachment != null){
             command = "$command -a ${attachment.absolutePath}"
@@ -65,7 +65,7 @@ class DefaultSignalApi(val client: Client): SignalApi {
     }
 
     private fun runSendToGroupCommand(content: String, botPhone: String, groupID: String, attachment: File? = null){
-        var command = "${Client.signalCli} -u $botPhone send -m \"$content\" -g $groupID"
+        var command = "${client.config.signalCliCommand} -u $botPhone send -m \"$content\" -g $groupID"
 
         if (attachment != null){
             command = "$command -a ${attachment.absolutePath}"
@@ -74,20 +74,20 @@ class DefaultSignalApi(val client: Client): SignalApi {
     }
 
     private fun runReceiveEnvelopesCommand(): List<String>{
-        val output = "${Client.signalCli} -u ${client.botPhone} receive".runCommand(File(System.getProperty("user.dir")))
+        val output = "${client.config.signalCliCommand} -u ${client.config.botPhone} receive".runCommand(File(System.getProperty("user.dir")))
         val envelopeStrings = output.split("\r\n\r\n").map { it.trim() }
 
         return envelopeStrings
     }
 
     private fun runUpdateGroupPhotoCommand(photo: File, groupId: String){
-        val command = "${Client.signalCli} -u ${client.botPhone} updateGroup -g \"$groupId\" -a \"${photo.absolutePath}\""
+        val command = "${client.config.signalCliCommand} -u ${client.config.botPhone} updateGroup -g \"$groupId\" -a \"${photo.absolutePath}\""
 
         val output = command.runCommand(File(System.getProperty("user.dir")))
     }
 
     private fun runUpdateGroupNameCommand(name: String, groupId: String){
-        val command = "${Client.signalCli} -u ${client.botPhone} updateGroup -g \"$groupId\" -n \"${name}\""
+        val command = "${client.config.signalCliCommand} -u ${client.config.botPhone} updateGroup -g \"$groupId\" -n \"${name}\""
 
         val output = command.runCommand(File(System.getProperty("user.dir")))
     }

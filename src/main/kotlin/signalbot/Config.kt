@@ -5,13 +5,15 @@ import java.io.File
 import java.lang.Exception
 import java.nio.file.Paths
 
-class Config(val botPhone: String){
+class Config(val botPhone: String, val signalCliCommand: String){
     companion object {
-        fun loadFile(configLocation: String): Config{
+        fun fromFile(configLocation: String): Config{
             try {
                 val text = File(configLocation).readText()
 
-                return Config(JSONObject(text).getString("bot_phone_number"))
+                return Config(
+                    botPhone = JSONObject(text).getString("bot_phone_number"),
+                    signalCliCommand = JSONObject(text).getString("signal_cli_command"))
             }
             catch (e: Exception){
                 throw Exception("Problem opening signalbot config file: $configLocation")
