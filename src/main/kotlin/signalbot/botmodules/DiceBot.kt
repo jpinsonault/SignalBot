@@ -16,7 +16,7 @@ class DiceBot{
 
                     if(size != null){
                         val result = Random().nextInt(size)
-                        client.replyTo(message, "Rolled a d$size - $result")
+                        client.api.replyTo(message, "Rolled a d$size - $result")
                     }
                 }
             }

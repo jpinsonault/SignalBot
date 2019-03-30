@@ -16,12 +16,12 @@ class GroupUpdaterBot{
 
             groupAvatar.ifFound(message.content) { matches ->
                 val photoUrl = matches.groupValues[1]
-                client.updateGroupPhoto(photoUrl, message.groupInfo.id)
+                client.api.updateGroupPhoto(photoUrl, message.groupInfo.id)
             }
 
             groupName.ifFound(message.content) { matches ->
                 val name = matches.groupValues[1]
-                client.updateGroupName(name, message.groupInfo.id)
+                client.api.updateGroupName(name, message.groupInfo.id)
             }
         }
     }

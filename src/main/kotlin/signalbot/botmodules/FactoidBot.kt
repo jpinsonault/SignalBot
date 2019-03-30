@@ -21,26 +21,26 @@ class FactoidBot{
                 val key = setMatches[1]
                 val value = setMatches[2]
 
-                client.saveKeyValue(prefix, key, value)
-                client.replyTo(message, "ok, $key is $value")
+                client.storage.saveKeyValue(prefix, key, value)
+                client.api.replyTo(message, "ok, $key is $value")
                 return
             }
 
             if (unsetMatches != null){
                 val key = unsetMatches[1]
 
-                client.removeKeyValue(prefix, key)
-                client.replyTo(message, "ok, $key has been unset")
+                client.storage.removeKeyValue(prefix, key)
+                client.api.replyTo(message, "ok, $key has been unset")
                 return
             }
 
             if (getMatches != null){
                 val key = getMatches[1]
 
-                val value = client.loadKeyValue(prefix, key, "")
+                val value = client.storage.loadKeyValue(prefix, key, "")
 
                 if (value != ""){
-                    client.replyTo(message, "$key is $value")
+                    client.api.replyTo(message, "$key is $value")
                 }
                 return
             }

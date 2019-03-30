@@ -27,6 +27,14 @@ fun <T, R>T?.ifNotNull(block: (T)->R): R?{
     return null
 }
 
+fun <T>T.isNotNull(): Boolean {
+    return this != null
+}
+
+fun <T>T.isNull(): Boolean {
+    return this == null
+}
+
 fun String.runCommand(workingDir: File, log: Boolean=false): String {
     println("Running command: ${this}")
     try {
@@ -44,4 +52,3 @@ fun String.runCommand(workingDir: File, log: Boolean=false): String {
         throw(e)
     }
 }
-

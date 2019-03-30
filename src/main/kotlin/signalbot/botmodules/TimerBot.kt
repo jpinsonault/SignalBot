@@ -48,7 +48,7 @@ class TimerBot{
                 val timerMessage = it.groupValues[2]
 
                 registerTimer(client, message, timerLengthSeconds, timerMessage)
-                client.replyTo(message, "Ok, I'll remind you in ${timerLengthSeconds}s")
+                client.api.replyTo(message, "Ok, I'll remind you in ${timerLengthSeconds}s")
             }
         }
 
@@ -57,27 +57,27 @@ class TimerBot{
             if(message.groupInfo != null){
                 val timerData = TimerData(endTime, reminder, message.groupInfo.id, group = true)
                 val doc = TimerData.toDocument(timerData)
-                client.saveDocument(prefix, doc)
+                client.storage.saveDocument(prefix, doc)
             }
             else{
                 val timerData = TimerData(endTime, reminder, message.author, group = false)
                 val doc = TimerData.toDocument(timerData)
-                client.saveDocument(prefix, doc)
+                client.storage.saveDocument(prefix, doc)
             }
         }
 
         fun checkTimers(client: Client){
             val now = System.currentTimeMillis()
 
-            val documents = client.loadDocuments(prefix, lte("endTime", now))
+            val documents = client.storage.loadDocuments(prefix, lte("endTime", now))
             val expiredTimers = documents.map { TimerData.fromDocument(it) }
 
             expiredTimers.forEach { timerData ->
                 val content = "Reminder: ${timerData.reminder}"
-                client.send(content, timerData.replyTo, timerData.group)
+                client.api.sendMessage(content, timerData.replyTo, timerData.group)
             }
 
-            documents.forEach { client.removeDocument(prefix, it) }
+            documents.forEach { client.storage.removeDocument(prefix, it) }
         }
     }
 }

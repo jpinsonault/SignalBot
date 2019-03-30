@@ -12,7 +12,7 @@ class StatusBot{
 
             statusRegex.ifFound(message.content){
 
-                client.replyTo(message, "Uptime (minutes): %.2f".format(client.upTimeMinutes))
+                client.api.replyTo(message, "Uptime (minutes): %.2f".format(client.upTimeMinutes))
             }
         }
     }

@@ -22,12 +22,12 @@ class StupidBot{
 
             badRegex.ifFound(message.content){
                 val attachment = loadAttachment(stupidBotUrls.random(), client.tempDir)
-                client.replyTo(message, "=[ I'm sorry", attachment)
+                client.api.replyTo(message, "=[ I'm sorry", attachment)
             }
 
             goodRegex.ifFound(message.content){
                 val attachment = loadAttachment(goodBotUrls.random(), client.tempDir)
-                client.replyTo(message, "=] Aww thanks", attachment)
+                client.api.replyTo(message, "=] Aww thanks", attachment)
             }
         }
     }

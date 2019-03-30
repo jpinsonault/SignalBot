@@ -15,11 +15,11 @@ class PauserBot{
 
             if (pauseRegex.containsMatchIn(message.content)){
                 client.pause()
-                client.replyTo(message, "Pausing bot - $wakeMeUrl")
+                client.api.replyTo(message, "Pausing bot - $wakeMeUrl")
             }
             if (unPauseRegex.containsMatchIn(message.content)){
                 client.unpause()
-                client.replyTo(message, "Unpausing bot - $mustCrushUrl")
+                client.api.replyTo(message, "Unpausing bot - $mustCrushUrl")
             }
         }
     }

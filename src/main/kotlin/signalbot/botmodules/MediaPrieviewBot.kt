@@ -28,14 +28,14 @@ class MediaPrieviewBot{
                     val attachment = getYoutubeDlAttachment(client, possibleUrl.toString())
 
                     if (attachment != null){
-                        client.replyTo(message, possibleUrl.toString(), attachment)
+                        client.api.replyTo(message, possibleUrl.toString(), attachment)
                     }
                 }
             }
 
             Regex("""!(p|preview)\s+(.+)""").ifFound(message.content){
                 getImageOrPreview(client, message.content).ifNotNull {attachment ->
-                    client.replyTo(message, "", attachment)
+                    client.api.replyTo(message, "", attachment)
                 }
             }
         }
