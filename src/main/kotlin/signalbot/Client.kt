@@ -58,7 +58,9 @@ class Client {
             }
 
             val envelopes = api.receiveEnvelopes()
-            envelopes.forEach { gotEnvelope(it) }
+            envelopes
+                .filter {true}
+                .forEach { gotEnvelope(it) }
         }
     }
 

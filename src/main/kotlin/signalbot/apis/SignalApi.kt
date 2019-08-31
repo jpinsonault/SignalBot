@@ -20,10 +20,10 @@ class DefaultSignalApi(val client: Client): SignalApi {
         val messageAttachment = attachment ?: client.getAttachmentFromCallbacks(content)
 
         if (group){
-            runSendToGroupCommand(content, to, client.config.botPhone, messageAttachment)
+            runSendToGroupCommand(content, client.config.botPhone, to, messageAttachment)
         }
         else{
-            runSendCommand(content, to, client.config.botPhone, messageAttachment)
+            runSendCommand(content, client.config.botPhone, to, messageAttachment)
         }
 
         client.clearTempDir()
@@ -74,7 +74,8 @@ class DefaultSignalApi(val client: Client): SignalApi {
     }
 
     private fun runReceiveEnvelopesCommand(): List<String>{
-        val output = "${client.config.signalCliCommand} -u ${client.config.botPhone} receive".runCommand(File(System.getProperty("user.dir")))
+        val cmd = "${client.config.signalCliCommand} -u ${client.config.botPhone} receive"
+        val output = cmd.runCommand(File(System.getProperty("user.dir")))
         val envelopeStrings = output.split("\r\n\r\n").map { it.trim() }
 
         return envelopeStrings

@@ -36,6 +36,8 @@ class Client(val userPhone: String){
     fun gotEnvelope(envelope: Envelope){
         if(envelope.body != null){
             val message = Message(envelope.body, envelope.from, envelope.groupInfo)
+            println("@#$@#$@#$@#$")
+            println(envelope.timestamp)
             onMessageCallback(this, message)
         }
     }
