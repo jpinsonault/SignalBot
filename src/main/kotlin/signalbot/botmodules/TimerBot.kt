@@ -36,7 +36,6 @@ class TimerBot{
 
         fun init(client: Client){
             client.onPeriodicTimer(1000){ client ->
-                println("checking timers")
                 checkTimers(client)
             }
         }

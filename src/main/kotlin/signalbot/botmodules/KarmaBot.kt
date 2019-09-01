@@ -14,6 +14,7 @@ class KarmaBot{
             if (matches != null){
                 val key = matches[1]
                 val incDec = matches[2]
+
                 if (incDec == "--") decrement(client, key)
                 else increment(client, key)
 

@@ -52,14 +52,20 @@ class Client {
 
         onReadyCallback(this)
 
+        mainLoop()
+    }
+
+    fun mainLoop(){
         while (true){
-            onTimerCallbacks.forEach {limiter, callback ->
+            onTimerCallbacks.forEach { (limiter, callback) ->
                 limiter.tryOrSkip { callback(this) }
             }
 
             val envelopes = api.receiveEnvelopes()
+
             envelopes
-                .filter {true}
+                .filter { it.messageTimestamp.isNotNull() }
+                .filter { System.currentTimeMillis() - it.messageTimestamp!! < 5*1000 }
                 .forEach { gotEnvelope(it) }
         }
     }
